@@ -41,6 +41,22 @@ module.exports = {
 		// Captures the element screenshot
 		return await body.takeScreenshot(true);
 	},
+	async takePartialScreenshots(link, element, sleeptime) {
+		await driver.get(link);
+		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
+
+		await sleep(sleeptime);
+
+		const ele = await driver.findElements(By.css(element));
+
+		const images = [];
+		for(const e of ele) {
+			images.push(await e.takeScreenshot(true));
+		}
+		return images;
+
+
+	},
 	async shutdown() {
 		await driver.quit();
 	},

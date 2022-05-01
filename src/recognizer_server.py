@@ -32,8 +32,9 @@ def crop(image_path="./image.png"):
     images = []
     filenames = []
     for filename in os.listdir("images"):
-        images.append(kocr.tools.read(f"images/{filename}"))
-        filenames.append(f"images/{filename}")
+        if filename.startswith('ROI'):
+            images.append(kocr.tools.read(f"images/{filename}"))
+            filenames.append(f"images/{filename}")
     
     return images, filenames
 
@@ -58,11 +59,6 @@ def recognize(images, filenames):
     return "not found"
 
 
-def cleanup(filenames):
-    for filename in filenames:
-        pass
-
-
 class Recognizer(lol_pb2_grpc.RecognizerServicer):
 
     def GetResponse(self, request, context):
@@ -71,7 +67,6 @@ class Recognizer(lol_pb2_grpc.RecognizerServicer):
 
         images, filenames = crop()
         ans = recognize(images, filenames)
-        cleanup()
         return lol_pb2.Response(filename=ans)
 
 
