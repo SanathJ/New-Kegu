@@ -19,11 +19,12 @@ module.exports = {
 		await driver.manage().window().fullscreen();
 	},
 	async takeScreenshot(site) {
+		await driver.switchTo().newWindow('tab');
 		let body;
 		switch (site) {
 
 		case 'opgg':
-			await driver.get('https://na.op.gg/champions/kayle/top/trends');
+			await driver.get('https://na.op.gg/champions/kayle/top/trends/');
 			await driver.wait(until.elementLocated(By.className('info')), 30000, 'Timed out after 30 seconds', 1000);
 			body = await driver.findElement(By.tagName('body'));
 			break;
@@ -41,7 +42,8 @@ module.exports = {
 		// Captures the element screenshot
 		return await body.takeScreenshot(true);
 	},
-	async takePartialScreenshots(link, element, sleeptime) {
+	async takePartialScreenshots(link, element, sleeptime, xpath = '.') {
+		await driver.switchTo().newWindow('tab');
 		await driver.get(link);
 		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
 
@@ -50,7 +52,8 @@ module.exports = {
 		const ele = await driver.findElements(By.css(element));
 
 		const images = [];
-		for(const e of ele) {
+		for(let e of ele) {
+			e = await e.findElement(By.xpath(xpath));
 			images.push(await e.takeScreenshot(true));
 		}
 		return images;

@@ -12,6 +12,7 @@
     "@grpc/proto-loader": "^0.6.9",
     "grpc": "^1.24.11",
     "grpc-tools": "^1.11.2",
+    "jimp": "^0.16.1",
     "selenium-webdriver": "^4.1.1"
   }
 }
