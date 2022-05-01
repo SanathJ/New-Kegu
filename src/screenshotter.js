@@ -2,7 +2,9 @@ const { Builder, until, By } = require('selenium-webdriver');
 const firefox = require('selenium-webdriver/firefox');
 const service = new firefox.ServiceBuilder('./drivers/geckodriver.exe');
 
-const { sleep } = require('./util.js');
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 let options;
 let driver;
