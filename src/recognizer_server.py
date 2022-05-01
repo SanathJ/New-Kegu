@@ -71,7 +71,7 @@ class Recognizer(lol_pb2_grpc.RecognizerServicer):
 
         images, filenames = crop()
         ans = recognize(images, filenames)
-
+        cleanup()
         return lol_pb2.Response(filename=ans)
 
 
