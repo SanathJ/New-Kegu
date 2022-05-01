@@ -1,10 +1,24 @@
 const fs = require('fs');
 const Jimp = require('jimp');
 const screenshotter = require('./screenshotter.js');
+const util = require('node:util');
+
+const grpc = require('grpc');
+const PROTO_PATH = './protos/lol.proto';
+const protoLoader = require('@grpc/proto-loader');
+
+// set up rpc
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {});
+const recognizer = grpc.loadPackageDefinition(packageDefinition).Recognizer;
+const rpc_client = new recognizer(
+	'localhost:50051',
+	grpc.credentials.createInsecure(),
+);
+const getResponse = util.promisify(rpc_client.GetResponse).bind(rpc_client);
 
 module.exports = {
 
-	async generate_lol_images(getResponse) {
+	async generate_lol_images() {
 		const encodedString = await screenshotter.takeScreenshot('lol');
 		fs.writeFileSync('./images/lol.png', encodedString, 'base64');
 
