@@ -19,14 +19,14 @@ const imagegen = require('./imagegen.js');
 		'localhost:50051',
 		grpc.credentials.createInsecure(),
 	);
-	exports.getResponse = util.promisify(client.GetResponse).bind(client);
+	const getResponse = util.promisify(client.GetResponse).bind(client);
 
 	// set up required directories
 	if (!fs.existsSync('./images')) {
 		fs.mkdirSync('./images');
 	}
 
-	await imagegen.generate_lol_images();
+	await imagegen.generate_lol_images(getResponse);
 	imagegen.cleanup();
 	await imagegen.generate_opgg_images();
 	screenshotter.shutdown();

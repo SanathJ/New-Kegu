@@ -11,6 +11,7 @@ let driver;
 module.exports = {
 	async init() {
 		options = new firefox.Options();
+		options.headless();
 		driver = await new Builder()
 			.forBrowser('firefox')
 			.setFirefoxService(service)
@@ -47,7 +48,9 @@ module.exports = {
 		await driver.get(link);
 		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
 
+		await (await driver.findElement(By.css(element))).click();
 		await sleep(sleeptime);
+		await driver.actions().move({ x: 5, y: 5 }).pause(1000).perform();
 
 		const ele = await driver.findElements(By.css(element));
 
