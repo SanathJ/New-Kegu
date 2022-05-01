@@ -1,5 +1,8 @@
 const fs = require('fs');
+
 const CronJob = require('cron').CronJob;
+
+const database = require('../src/database.js');
 
 module.exports = {
 	name: 'ready',
@@ -15,5 +18,6 @@ module.exports = {
 			job.start();
 		}
 		console.log(`Logged in as ${client.user.tag}`);
+		await database.init();
 	},
 };

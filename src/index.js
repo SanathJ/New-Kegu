@@ -15,8 +15,18 @@ const { token } = require('../config.json');
 		fs.mkdirSync('./images');
 	}
 
+	const flags = Intents.FLAGS;
 	const discord_client = new Client({
-		intents: [Intents.FLAGS.GUILDS],
+		intents: [
+			flags.GUILDS,
+			flags.GUILD_MESSAGES,
+			flags.GUILD_MESSAGE_REACTIONS,
+			flags.DIRECT_MESSAGES,
+			flags.GUILD_EMOJIS_AND_STICKERS,
+		],
+		partials: [
+			'CHANNEL',
+		],
 		allowedMentions: {
 			parse: ['users', 'everyone'],
 		},
