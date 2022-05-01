@@ -1,0 +1,7 @@
+opencv-python==4.5.4.60
+matplotlib
+numpy
+tensorflow
+keras-ocr
+grpcio
+grpcio-tools
