@@ -10,6 +10,9 @@ const screenshotter = require('./screenshotter.js');
 let getResponse;
 
 async function generate_lol_images() {
+	const encodedString = await screenshotter.takeScreenshot('lol');
+	fs.writeFileSync('./image.png', encodedString, 'base64');
+
 	let cnt = 2;
 	let encodedStrings = await screenshotter.takePartialScreenshots('https://lolalytics.com/lol/kayle/build/', 'div[class^=\'SimpleGraph_simple\']', 2000);
 	await Promise.all(encodedStrings);
@@ -54,9 +57,6 @@ function cleanup() {
 	if (!fs.existsSync('./images')) {
 		fs.mkdirSync('./images');
 	}
-
-	const encodedString = await screenshotter.takeScreenshot('lol');
-	fs.writeFileSync('./image.png', encodedString, 'base64');
 
 	await generate_lol_images(client);
 	cleanup();
