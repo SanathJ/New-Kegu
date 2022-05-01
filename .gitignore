@@ -3,3 +3,5 @@ venv/
 images/
 image.png
 __pycache__/
+config.json
+*.db

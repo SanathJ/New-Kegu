@@ -9,7 +9,11 @@
   "author": "SanathJ",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
     "@grpc/proto-loader": "^0.6.9",
+    "cron": "^1.8.3",
+    "discord.js": "^13.6.0",
     "grpc": "^1.24.11",
     "grpc-tools": "^1.11.2",
     "jimp": "^0.16.1",
