@@ -66,7 +66,7 @@ module.exports = {
 
 		// crop leaderboard image
 		const image = await Jimp.read(`images/opgg${cnt - 1}.png`);
-		image.crop(0, 0, image.bitmap.width, 907);
+		image.crop(0, 0, image.bitmap.width, 728);
 		image.write(`images/opgg${cnt - 1}.png`);
 	},
 

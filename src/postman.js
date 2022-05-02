@@ -43,7 +43,28 @@ module.exports = {
 				__dirname + '/../images/' + f,
 			));
 
-
 		interaction.client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
+	},
+	async opgg(interaction, channel_id) {
+		const titles = [
+			'Top Kayle Win Rate',
+			'Top Kayle Pick Rate',
+			'Kayle Ban Rate',
+			'Kayle Win Rate by Game Length',
+			'Leaderboard',
+		];
+		await imagegen.generate_opgg_images();
+		const files = fs.readdirSync('./images/')
+			.filter(f => f.startsWith('opgg'))
+			.map(f => new MessageAttachment(
+				__dirname + '/../images/' + f,
+			));
+
+		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
+		const channel = await interaction.client.channels.fetch(channel_id);
+
+		for (const pair of zip(titles, files)) {
+			await channel.send({ content: pair[0], files: [pair[1]] });
+		}
 	},
 };
