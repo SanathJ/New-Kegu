@@ -1,6 +1,6 @@
 {
   "name": "kegu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Non-API dependent and source agnostic kegu",
   "main": "src/index.js",
   "scripts": {
