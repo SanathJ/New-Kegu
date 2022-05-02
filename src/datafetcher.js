@@ -1,7 +1,10 @@
+const fetch = require('node-fetch');
 const { Builder, By, until } = require('selenium-webdriver');
 const firefox = require('selenium-webdriver/firefox');
 const { urls } = require('./constants');
 const service = new firefox.ServiceBuilder('./drivers/geckodriver.exe');
+
+const { JSDOM } = require('jsdom');
 
 let driver;
 
@@ -15,6 +18,39 @@ function findVal(obj, keyToFind) {
 		}
 	}
 	return false;
+}
+
+const championJson = {};
+
+async function getLatestChampionDDragon(language = 'en_US') {
+	if (championJson[language]) {
+		return championJson[language].data;
+	}
+
+	let response;
+	let versionIndex = 0;
+	// I loop over versions because 9.22.1 is broken
+	do {
+		const data = await (await fetch('http://ddragon.leagueoflegends.com/api/versions.json')).json();
+		const version = data[versionIndex++];
+
+		try {
+			response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/${language}/champion.json`, {});
+			break;
+		}
+		catch {
+			console.log('ddragon doesn\'t have data, trying another patch');
+		}
+	} while(!response);
+
+	championJson[language] = await response.json();
+	return championJson[language].data;
+}
+
+// NOTE: IN DDRAGON THE ID IS THE CLEAN NAME!!! It's also super-inconsistent, and broken at times.
+// Cho'gath => Chogath, Wukong => Monkeyking, Fiddlesticks => Fiddlesticks/FiddleSticks (depending on what mood DDragon is in this patch)
+async function getChampionByID(name, language = 'en_US') {
+	return (await getLatestChampionDDragon(language))[name];
 }
 
 module.exports = {
@@ -61,6 +97,38 @@ module.exports = {
 		data.br = ele[2];
 
 		return data;
+	},
+	async ugg(tier) {
+		const dom = await JSDOM.fromURL('https://u.gg/lol/champions/kayle/build?rank=' + tier, {});
+		const arr = {};
+
+		const positions = ['jungle', 'supp', 'adc', 'top', 'mid'];
+		const champId = (await getChampionByID('Kayle')).key;
+
+		// figure out popular position
+		let rgx = RegExp('"' + champId + '" *: *\[[0-5 ,]+]');
+		const preferred = JSON.parse('{' + dom.serialize().match(rgx).toString() + '}');
+		const pos = positions[preferred[champId.toString()][0] - 1];
+
+		rgx = RegExp('world_' + tier + '_' + pos + '": *{[\n "a-zA-Z0-9:,_.]*?"counters":');
+
+		let fullJson;
+
+		try {
+			fullJson = JSON.parse(dom.serialize().match(rgx).toString().replace(/, *"counters" *: */, '}')
+				.replace(RegExp('world_' + tier + '_' + pos + '": *'), ''));
+		}
+		catch {
+			return;
+		}
+
+		arr.wr = parseFloat(fullJson.win_rate);
+		arr.rank = `${fullJson.rank !== null ? fullJson.rank : '?'} / ${fullJson.total_rank !== null ? fullJson.total_rank : '?'}`;
+		arr.pr = parseFloat(fullJson.pick_rate);
+		arr.br = parseFloat(fullJson.ban_rate);
+		arr.matches = new Intl.NumberFormat('en-US').format(fullJson.matches);
+
+		return arr;
 	},
 
 };

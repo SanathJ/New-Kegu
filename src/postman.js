@@ -67,4 +67,32 @@ module.exports = {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
+	async ugg(interaction, channel_id) {
+		const titles = [
+			'Platinum',
+			'Platinum+',
+			'Diamond',
+			'Diamond+',
+			'Diamond 2+',
+			'Master',
+			'Master+',
+			'Grandmaster',
+			'Challenger',
+			'Overall',
+		];
+
+		await imagegen.generate_ugg_images();
+		const files = fs.readdirSync('./images/')
+			.filter(f => f.startsWith('ugg'))
+			.map(f => new MessageAttachment(
+				__dirname + '/../images/' + f,
+			));
+
+		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
+		const channel = await interaction.client.channels.fetch(channel_id);
+
+		for (const pair of zip(titles, files)) {
+			await channel.send({ content: pair[0], files: [pair[1]] });
+		}
+	},
 };
