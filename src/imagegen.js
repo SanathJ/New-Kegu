@@ -7,6 +7,8 @@ const grpc = require('grpc');
 const PROTO_PATH = './protos/lol.proto';
 const protoLoader = require('@grpc/proto-loader');
 
+const { urls } = require('./constants.js');
+
 // set up rpc
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {});
 const recognizer = grpc.loadPackageDefinition(packageDefinition).Recognizer;
@@ -23,20 +25,20 @@ module.exports = {
 		fs.writeFileSync('./images/lol.png', encodedString, 'base64');
 
 		let cnt = 2;
-		let encodedStrings = await screenshotter.takePartialScreenshots('https://lolalytics.com/lol/kayle/build/', 'div[class^=\'SimpleGraph_simple\']', 3000);
+		let encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'SimpleGraph_simple\']', 3000);
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 
-		encodedStrings = await screenshotter.takePartialScreenshots('https://lolalytics.com/lol/kayle/build/', 'div[class^=\'Graphs\']', 3000);
+		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Graphs\']', 3000);
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
-		encodedStrings = await screenshotter.takePartialScreenshots('https://lolalytics.com/lol/kayle/build/', 'div[class^=\'Depth_depth\']', 3000);
+		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Depth_depth\']', 3000);
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
@@ -48,14 +50,14 @@ module.exports = {
 
 	async generate_opgg_images() {
 		let cnt = 1;
-		let encodedStrings = await screenshotter.takePartialScreenshots('https://na.op.gg/champions/kayle/top/trends', 'div[class^=\'recharts-responsive\']', 3000, './..');
+		let encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_trends, 'div[class^=\'recharts-responsive\']', 3000, './..');
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 
-		encodedStrings = await screenshotter.takePartialScreenshots('https://na.op.gg/champions', 'table[class^=\'positionRank\']', 3000, './..');
+		encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_champions, 'table[class^=\'positionRank\']', 3000, './..');
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');

@@ -1,5 +1,6 @@
 const { Builder, until, By } = require('selenium-webdriver');
 const firefox = require('selenium-webdriver/firefox');
+const { urls } = require('./constants.js');
 const service = new firefox.ServiceBuilder('./drivers/geckodriver.exe');
 
 function sleep(ms) {
@@ -26,13 +27,13 @@ module.exports = {
 		switch (site) {
 
 		case 'opgg':
-			await driver.get('https://na.op.gg/champions/kayle/top/trends/');
+			await driver.get(urls.opgg_trends);
 			await driver.wait(until.elementLocated(By.className('info')), 30000, 'Timed out after 30 seconds', 1000);
 			body = await driver.findElement(By.tagName('body'));
 			break;
 
 		case 'lol':
-			await driver.get('https://lolalytics.com/lol/kayle/build/');
+			await driver.get(urls.lolalytics);
 			await driver.wait(until.elementLocated(By.css('div[class^=\'ChampionStats\']')), 30000, 'Timed out after 30 seconds', 1000);
 			body = await driver.findElement(By.tagName('body'));
 			break;
