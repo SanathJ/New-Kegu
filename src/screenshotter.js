@@ -6,13 +6,12 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let options;
 let driver;
 
 
 module.exports = {
 	async init() {
-		options = new firefox.Options();
+		const options = new firefox.Options();
 		options.headless();
 		driver = await new Builder()
 			.forBrowser('firefox')
