@@ -23,9 +23,9 @@ function close() {
 }
 
 async function backup() {
-	try{
-		await db.cursor.run('VACUUM');
-		await db.cursor.run('VACUUM main INTO ?', __dirname + '/../backup.db');
+	try {
+		await db.cursor.prepare('VACUUM').run();
+		await db.cursor.prepare('VACUUM main INTO ?').run(__dirname + '/../backup.db');
 	}
 	catch(err) {
 		console.log(err);
