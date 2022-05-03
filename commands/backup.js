@@ -9,14 +9,14 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('backup')
 		.setDescription('Takes a backup of database and DMs the file'),
-	async execute(interaction, argsIgnore) {
+	async execute(interaction, client) {
 		await backup();
 		const file = new MessageAttachment(
 			__dirname + '/../backup.db',
 		);
 
 		if(interaction === undefined) {
-			const owner = await argsIgnore.users.fetch(ownerID);
+			const owner = await client.users.fetch(ownerID);
 			owner.send({ content:'Backup of the database:', files:[file] })
 				.finally(() =>{
 					fs.unlinkSync(__dirname + '/../backup.db');
