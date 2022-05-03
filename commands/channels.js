@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('channels')
-		.setDescription('Set appropriate discord channels.')
+		.setDescription('Set appropriate discord channels')
 		.addStringOption(option =>
 			option.setName('type')
 				.setDescription('The type of channel.')

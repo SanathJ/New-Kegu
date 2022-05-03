@@ -8,7 +8,7 @@ const datafetcher = require('../src/datafetcher.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('lol')
-		.setDescription('Posts lolalytics data in #lolalytics and updates patch data'),
+		.setDescription('Posts Lolalytics data in #lolalytics and updates patch data'),
 	async execute(interaction) {
 		// defer response as web interactions take a while
 		await interaction.deferReply({ ephemeral: true });
