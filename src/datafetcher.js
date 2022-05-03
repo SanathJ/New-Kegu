@@ -100,7 +100,7 @@ module.exports = {
 
 		return data;
 	},
-	async ugg(tier) {
+	async ugg(tier = 'platinum_plus') {
 		const dom = await JSDOM.fromURL(urls.ugg + tier, {});
 		const arr = {};
 
@@ -209,6 +209,10 @@ module.exports = {
 		for(let i = 0; i < 9; i++) {
 			data[graph_data_labels[i]] = JSON.parse(('{' + matches[i] + '}').replace('data', '"data"')).data;
 		}
+
+		data.wr = data['Win Rate'];
+		data.pr = data.Popularity;
+		data.br = data['Ban Rate'];
 
 		return data;
 	},

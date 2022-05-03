@@ -12,9 +12,14 @@ async function init() {
 	db.statements = {};
 	db.statements.channel = db.cursor.prepare('SELECT channel_id FROM channels WHERE name=?');
 	// tables
+	db.statements.data = {};
+	db.statements.data_recent = {};
 	for (const table of ['lol', 'opgg', 'ugg', 'log']) {
 		db.statements[table] = db.cursor.prepare(format('INSERT OR REPLACE INTO %s VALUES(?, ?, ?, ?, ?)', table));
+		db.statements.data[table] = db.cursor.prepare(format('SELECT * FROM %s WHERE Date = ?', table));
+		db.statements.data_recent[table] = db.cursor.prepare(format('SELECT * FROM %s ORDER BY Date DESC LIMIT 1', table));
 	}
+
 
 }
 

@@ -30,7 +30,7 @@ module.exports = {
 		const date = today.getFullYear() + '-'
 					+ ('0' + (today.getMonth() + 1)).slice(-2) + '-'
 					+ ('0' + today.getDate()).slice(-2);
-		db.statements.log.run(date, patch, data['Win Rate'], data.Popularity, data['Ban Rate']);
+		db.statements.log.run(date, patch, data.wr, data.pr, data.br);
 
 		// complete responding to command
 		await interaction.editReply('Sent images successfully.');
