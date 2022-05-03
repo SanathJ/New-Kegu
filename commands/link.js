@@ -25,7 +25,8 @@ module.exports = {
 				.addStringOption(option =>
 					option.setName('name')
 						.setDescription('Name of the link')
-						.setRequired(true))),
+						.setRequired(true)
+						.setAutocomplete(true))),
 	async execute(interaction) {
 
 		if(interaction.options.getSubcommand() == 'add') {
