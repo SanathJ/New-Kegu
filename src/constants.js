@@ -41,8 +41,14 @@ const embedOptions = {
 	},
 };
 
+const emotes = {
+	upvote: '749195645658726481',
+	downvote: '749195645902127224',
+};
+
 module.exports = {
 	urls,
 	colors,
 	embedOptions,
+	emotes,
 };
