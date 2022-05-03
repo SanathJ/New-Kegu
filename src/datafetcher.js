@@ -4,6 +4,8 @@ const firefox = require('selenium-webdriver/firefox');
 const { urls } = require('./constants');
 const service = new firefox.ServiceBuilder('./drivers/geckodriver.exe');
 
+const { format } = require('util');
+
 const { JSDOM } = require('jsdom');
 
 let driver;
@@ -31,11 +33,11 @@ async function getLatestChampionDDragon(language = 'en_US') {
 	let versionIndex = 0;
 	// I loop over versions because 9.22.1 is broken
 	do {
-		const data = await (await fetch('http://ddragon.leagueoflegends.com/api/versions.json')).json();
+		const data = await (await fetch(urls.game_versions)).json();
 		const version = data[versionIndex++];
 
 		try {
-			response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/${language}/champion.json`, {});
+			response = await fetch(format(urls.champion_data, version, language), {});
 			break;
 		}
 		catch {
@@ -99,7 +101,7 @@ module.exports = {
 		return data;
 	},
 	async ugg(tier) {
-		const dom = await JSDOM.fromURL('https://u.gg/lol/champions/kayle/build?rank=' + tier, {});
+		const dom = await JSDOM.fromURL(urls.ugg + tier, {});
 		const arr = {};
 
 		const positions = ['jungle', 'supp', 'adc', 'top', 'mid'];

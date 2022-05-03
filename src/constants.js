@@ -5,6 +5,9 @@ module.exports = {
 		opgg_trends: 'https://na.op.gg/champions/kayle/top/trends/',
 		opgg_champions: 'https://na.op.gg/champions',
 		log: 'https://www.leagueofgraphs.com/champions/stats/kayle',
+		game_versions: 'http://ddragon.leagueoflegends.com/api/versions.json',
+		champion_data: 'https://ddragon.leagueoflegends.com/cdn/%s/data/%s/champion.json',
+		ugg: 'https://u.gg/lol/champions/kayle/build?rank=',
 	},
 	colors: {
 		log: {
