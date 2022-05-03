@@ -95,4 +95,17 @@ module.exports = {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
+	async log(interaction, channel_id, data) {
+		await imagegen.generate_log_images(data);
+		const files = fs.readdirSync('./images/')
+			.filter(f => f.startsWith('log'))
+			.sort((a, b) => {
+				return parseInt(a.slice(3, -4)) - parseInt(b.slice(3, -4));
+			})
+			.map(f => new MessageAttachment(
+				__dirname + '/../images/' + f,
+			));
+
+		interaction.client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
+	},
 };

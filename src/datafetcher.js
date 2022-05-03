@@ -130,5 +130,85 @@ module.exports = {
 
 		return arr;
 	},
+	async log() {
+		const data = {};
+		const dom = await JSDOM.fromURL(urls.log, {});
+
+		// champ data
+		const labelArr = ['Popularity', 'Win Rate', 'Ban Rate', 'Mained By'];
+		for(let i = 0; i < 4; i++) {
+			data[labelArr[i]] = Number((dom.window.document.getElementById('graphDD' + (i + 1)).innerHTML).trim().replace('%', ''));
+		}
+
+		// data about role popularity and win rate
+		data.roles = [];
+		const coll = dom.window.document.getElementsByTagName('progressbar');
+		for(let i = 0; i < coll.length / 2; i++) {
+			data.roles[i] = {};
+			data.roles[i].popularity = coll[2 * i].getAttribute('data-value') * 100;
+			data.roles[i].winrate = coll[2 * i + 1].getAttribute('data-value') * 100;
+		}
+		const rowColl = dom.window.document.getElementsByClassName('sortable_table')[0]
+			.getElementsByTagName('tbody')[0]
+			.getElementsByTagName('tr');
+
+		for(let i = 1; i < rowColl.length; i++) {
+			data.roles[i - 1].position = rowColl[i].getElementsByTagName('td')[0].getElementsByTagName('a')[0].textContent.trim();
+		}
+
+		// Damage Dealt
+		data.damage_distribution = [];
+		const bars = dom.window.document.getElementsByClassName('stacked_bar')[0]
+			.getElementsByClassName('stacked_bar_area');
+		for(const i of bars) {
+			data.damage_distribution.push(parseFloat(i.getAttribute('tooltip')));
+		}
+
+		// Misc Stats
+		data.misc = {
+			kda: {},
+			penta: {},
+			gold: {},
+			minions: {},
+			wards: {},
+			damage: {},
+			multiKills: {
+				quadra: {},
+				triple: {},
+				double: {},
+			},
+		};
+		data.misc.kda.kills = dom.window.document.getElementsByClassName('kills')[0].innerHTML;
+		data.misc.kda.deaths = dom.window.document.getElementsByClassName('deaths')[0].innerHTML;
+		data.misc.kda.assists = dom.window.document.getElementsByClassName('assists')[0].innerHTML;
+
+		const labels = ['penta', 'gold', 'minions', 'wards', 'damage'];
+		for(let i = 2; i < dom.window.document.getElementsByClassName('number').length; i++) {
+			data.misc[labels[i - 2]].value = dom.window.document.getElementsByClassName('number')[i].innerHTML.trim();
+		}
+		const smallLabels = ['quadra', 'triple', 'double'];
+		for(let i = 1; i < dom.window.document.getElementsByClassName('number-small').length; i++) {
+			data.misc.multiKills[smallLabels[i - 1]].value = parseFloat(dom.window.document.getElementsByClassName('number-small')[i].textContent).toFixed(4);
+		}
+		for(let i = 0; i < dom.window.document.getElementsByClassName('number-legend-small').length; i++) {
+			data.misc.multiKills[smallLabels[i]].rank = dom.window.document.getElementsByClassName('number-legend-small')[i].innerHTML.trim();
+		}
+
+
+		// data for graphs
+		const rgx = /data: \[\[.+]]/g;
+		const matches = dom.serialize().match(rgx);
+
+		const graph_data_labels = [
+			'popularity_history', 'winrate_history', 'banrate_history',
+			'gold', 'minions', 'kills_and_assists', 'deaths',
+			'winrate_duration', 'winrate_games',
+		];
+		for(let i = 0; i < 9; i++) {
+			data[graph_data_labels[i]] = JSON.parse(('{' + matches[i] + '}').replace('data', '"data"')).data;
+		}
+
+		return data;
+	},
 
 };
