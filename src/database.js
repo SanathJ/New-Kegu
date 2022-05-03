@@ -20,6 +20,10 @@ async function init() {
 		db.statements.data_recent[table] = db.cursor.prepare(format('SELECT * FROM %s ORDER BY Date DESC LIMIT 1', table));
 	}
 
+	// links
+	db.statements.link_add = db.cursor.prepare('INSERT INTO links VALUES(?, ?)');
+	db.statements.link_edit = db.cursor.prepare('UPDATE links SET link = ? WHERE name = ?');
+	db.statements.link_remove = db.cursor.prepare('DELETE FROM links WHERE name = ?');
 
 }
 
