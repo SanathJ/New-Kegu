@@ -8,7 +8,8 @@ module.exports = {
 		.setDescription('Sends a link')
 		.addStringOption(option =>
 			option.setName('name')
-				.setDescription('The name of the link or \'all\'')),
+				.setDescription('The name of the link or \'all\'')
+				.setAutocomplete(true)),
 	async execute(interaction) {
 		await interaction.deferReply();
 		const name = interaction.options.getString('name');
