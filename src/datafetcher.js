@@ -216,5 +216,7 @@ module.exports = {
 
 		return data;
 	},
-
+	async shutdown() {
+		await driver.quit();
+	},
 };

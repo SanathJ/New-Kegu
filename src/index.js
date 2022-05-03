@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const screenshotter = require('./screenshotter.js');
 const datafetcher = require('./datafetcher.js');
+const database = require('./database.js');
 
 const { Client, Collection, Intents } = require('discord.js');
 
@@ -66,4 +67,8 @@ const { token } = require('../config.json');
 	discord_client.login(token);
 })();
 
-process.on('beforeExit', screenshotter.shutdown);
+process.on('beforeExit', () => {
+	screenshotter.shutdown();
+	datafetcher.shutdown();
+	database.close();
+});
