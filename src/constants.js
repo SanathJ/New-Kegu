@@ -44,6 +44,7 @@ const embedOptions = {
 const emotes = {
 	upvote: '749195645658726481',
 	downvote: '749195645902127224',
+	refresh: '822680975157887036',
 };
 
 module.exports = {
