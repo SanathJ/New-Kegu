@@ -26,6 +26,10 @@ async function init() {
 	db.statements.link_remove = db.cursor.prepare('DELETE FROM links WHERE name = ?');
 	db.statements.show = db.cursor.prepare('SELECT * FROM links WHERE name = ?');
 	db.statements.show_all = db.cursor.prepare('SELECT * FROM links');
+
+	// messages
+	db.statements.message_add = db.cursor.prepare('INSERT OR REPLACE INTO messages VALUES(?, ?, ?)');
+	db.statements.message_get = db.cursor.prepare('SELECT * FROM messages WHERE type = ?');
 }
 
 function close() {
