@@ -22,7 +22,7 @@ module.exports = {
 		}
 
 		if (data.length === 0 || data[0] === undefined) {
-			await interaction.editReply('No such link exists.');
+			await interaction.editReply('No such link exists');
 		}
 		else {
 			const text = [];

@@ -13,14 +13,14 @@ module.exports = {
 		// defer response as web interactions take a while
 		await interaction.deferReply({ ephemeral: true });
 
-		const uggChannelID = db.statements.channel.get('ugg').channel_id;
+		const channel_id = db.statements.channel.get('ugg').channel_id;
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction.client, uggChannelID, patch);
+		sendDateAndPatch(interaction.client, channel_id, patch);
 
 		// send images
-		await ugg(interaction.client, uggChannelID);
+		await ugg(interaction.client, channel_id);
 
 
 		// update patch data
@@ -33,6 +33,6 @@ module.exports = {
 		db.statements.ugg.run(date, patch, data.wr, data.pr, data.br);
 
 		// complete responding to command
-		await interaction.editReply('Sent images successfully.');
+		await interaction.editReply('Sent images successfully');
 	},
 };

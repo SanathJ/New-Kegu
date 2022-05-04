@@ -6,7 +6,7 @@ const db = {};
 
 async function init() {
 	db.cursor = new Database('./data.db');
-	console.log('Connected to the data database.');
+	console.log('Connected to the data database');
 
 	// commonly executed database statements
 	db.statements = {};

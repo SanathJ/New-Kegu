@@ -13,14 +13,14 @@ module.exports = {
 		// defer response as web interactions take a while
 		await interaction.deferReply({ ephemeral: true });
 
-		const opggChannelID = db.statements.channel.get('opgg').channel_id;
+		const channel_id = db.statements.channel.get('opgg').channel_id;
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction.client, opggChannelID, patch);
+		sendDateAndPatch(interaction.client, channel_id, patch);
 
 		// send images
-		await opgg(interaction.client, opggChannelID);
+		await opgg(interaction.client, channel_id);
 
 
 		// update patch data
@@ -33,6 +33,6 @@ module.exports = {
 		db.statements.opgg.run(date, patch, data.wr, data.pr, data.br);
 
 		// complete responding to command
-		await interaction.editReply('Sent images successfully.');
+		await interaction.editReply('Sent images successfully');
 	},
 };

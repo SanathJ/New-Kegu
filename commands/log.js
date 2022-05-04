@@ -13,15 +13,15 @@ module.exports = {
 		// defer response as web interactions take a while
 		await interaction.deferReply({ ephemeral: true });
 
-		const logChannelID = db.statements.channel.get('log').channel_id;
+		const channel_id = db.statements.channel.get('log').channel_id;
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction.client, logChannelID, patch);
+		sendDateAndPatch(interaction.client, channel_id, patch);
 
 		// send images
 		const data = await datafetcher.log();
-		await log(interaction.client, logChannelID, data);
+		await log(interaction.client, channel_id, data);
 
 
 		// update patch data
@@ -33,6 +33,6 @@ module.exports = {
 		db.statements.log.run(date, patch, data.wr, data.pr, data.br);
 
 		// complete responding to command
-		await interaction.editReply('Sent images successfully.');
+		await interaction.editReply('Sent images successfully');
 	},
 };

@@ -24,13 +24,13 @@ module.exports = {
 	async execute(interaction) {
 		const channel = interaction.options.getChannel('channel');
 		if (channel.type != 'GUILD_TEXT') {
-			await interaction.reply({ content: 'Channel must be a text channel.', ephemeral: true });
+			await interaction.reply({ content: 'Channel must be a text channel', ephemeral: true });
 			return;
 		}
 		const { db } = require('../src/database.js');
 
 		db.cursor.prepare('INSERT OR REPLACE INTO channels VALUES(?, ?)').run(channel.id, interaction.options.getString('type'));
 
-		await interaction.reply({ content: 'Successfully set channel.', ephemeral: true });
+		await interaction.reply({ content: 'Successfully set channel', ephemeral: true });
 	},
 };

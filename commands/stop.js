@@ -5,7 +5,7 @@ module.exports = {
 		.setName('stop')
 		.setDescription('Stops bot'),
 	async execute(interaction) {
-		await interaction.reply({ content: 'Shut down.', ephemeral: true });
+		await interaction.reply({ content: 'Shut down', ephemeral: true });
 		process.exit(0);
 	},
 };
