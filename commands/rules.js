@@ -18,7 +18,7 @@ module.exports = {
 			'#5.) Stereotyping and Labels. We look to learn and help grow with our community. This inhibits our mission.',
 			'#6.) Channels. Contain things to the appropriate channels. Especially NSFW.',
 			'#7.) Hot-button issues. This is a gaming server - Politics, religion and other hot-button issues are disallowed.',
-			'#8.) Against Riot\'s TOS. Account selling/buying, boosting and anything else that breaks the Summoner’s code.',
+			'#8.) Against Riot\'s TOS. Account selling/buying, boosting and anything else that breaks the Summoner\'s code.',
 			'#9.) Against Discord\'s TOS. https://discord.com/guidelines',
 			'#10.) Dealing with rule breakers. If anyone starts topics that you do not think are appropriate to a gaming server, do not engage with that person -- just report it to the mod',
 		];
