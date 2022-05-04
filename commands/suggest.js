@@ -25,10 +25,10 @@ module.exports = {
 			.setDescription(suggestion);
 
 		const channel = await interaction.client.channels.fetch(channel_id);
-		const sentMsg = await channel.send({ embeds: [embed] });
+		const sent_message = await channel.send({ embeds: [embed] });
 
-		await sentMsg.react(emotes.upvote);
-		await sentMsg.react(emotes.downvote);
+		await sent_message.react(emotes.upvote);
+		await sent_message.react(emotes.downvote);
 
 		await interaction.editReply('Success');
 		await interaction.deleteReply();

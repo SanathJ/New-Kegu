@@ -57,12 +57,12 @@ module.exports = {
 								.setLabel('No')
 								.setStyle('DANGER'));
 
-					const sentMsg = await interaction.editReply({
+					const sent_message = await interaction.editReply({
 						content: 'A link by this name already exists. Would you like to edit it?',
 						components:[row],
 						ephemeral:true,
 					});
-					const collector = sentMsg.createMessageComponentCollector({ componentType: 'BUTTON' });
+					const collector = sent_message.createMessageComponentCollector({ componentType: 'BUTTON' });
 					collector.on('collect', async (i) => {
 						if(i.customId == 'yes') {
 							db.statements.link_edit.run(link, name);
