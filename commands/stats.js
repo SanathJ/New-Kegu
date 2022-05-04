@@ -50,7 +50,7 @@ module.exports = {
 			row = db.statements.data[site].get(reversed_date_string);
 
 			if (!row) {
-				interaction.editReply('No data was found for ' + date_string + '!');
+				await interaction.editReply('No data was found for ' + date_string + '!');
 				return;
 			}
 		}
