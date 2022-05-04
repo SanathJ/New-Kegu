@@ -6,7 +6,7 @@ module.exports = {
 		.setDescription('Set appropriate discord channels')
 		.addStringOption(option =>
 			option.setName('type')
-				.setDescription('The type of channel.')
+				.setDescription('The type of channel')
 				.setRequired(true)
 				.addChoices({ name:'Current', value:'current' },
 					{ name:'U.GG', value:'ugg' },
@@ -19,7 +19,7 @@ module.exports = {
 				))
 		.addChannelOption(option =>
 			option.setName('channel')
-				.setDescription('The channel.')
+				.setDescription('The channel')
 				.setRequired(true)),
 	async execute(interaction) {
 		const channel = interaction.options.getChannel('channel');
