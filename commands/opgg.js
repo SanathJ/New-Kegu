@@ -17,10 +17,10 @@ module.exports = {
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction, opggChannelID, patch);
+		sendDateAndPatch(interaction.client, opggChannelID, patch);
 
 		// send images
-		await opgg(interaction, opggChannelID);
+		await opgg(interaction.client, opggChannelID);
 
 
 		// update patch data

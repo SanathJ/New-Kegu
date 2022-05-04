@@ -17,10 +17,10 @@ module.exports = {
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction, lolChannelID, patch);
+		sendDateAndPatch(interaction.client, lolChannelID, patch);
 
 		// send images
-		await lol(interaction, lolChannelID);
+		await lol(interaction.client, lolChannelID);
 
 
 		// update patch data

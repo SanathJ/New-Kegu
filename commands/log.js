@@ -17,11 +17,11 @@ module.exports = {
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction, logChannelID, patch);
+		sendDateAndPatch(interaction.client, logChannelID, patch);
 
 		// send images
 		const data = await datafetcher.log();
-		await log(interaction, logChannelID, data);
+		await log(interaction.client, logChannelID, data);
 
 
 		// update patch data

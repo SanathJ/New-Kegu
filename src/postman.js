@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 
 const imagegen = require('./imagegen.js');
 const { urls } = require('./constants.js');
+const datafetcher = require('./datafetcher.js');
 
 
 async function splitAndSendFiles(channel, files) {
@@ -26,15 +27,15 @@ module.exports = {
 			console.error(error);
 		}
 	},
-	async sendDateAndPatch(interaction, channel_id, patch) {
-		const channel = await interaction.client.channels.fetch(channel_id);
+	async sendDateAndPatch(client, channel_id, patch) {
+		const channel = await client.channels.fetch(channel_id);
 
 		await channel.send(Formatters.codeBlock(
 			`${new Intl.DateTimeFormat(['en-US'], { dateStyle: 'medium' }).format(new Date())} - Patch ${patch}`),
 		);
 
 	},
-	async lol(interaction, channel_id) {
+	async lol(client, channel_id) {
 		await imagegen.generate_lol_images();
 		imagegen.cleanup();
 		const files = fs.readdirSync('./images/')
@@ -43,9 +44,9 @@ module.exports = {
 				__dirname + '/../images/' + f,
 			));
 
-		interaction.client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
+		client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
 	},
-	async opgg(interaction, channel_id) {
+	async opgg(client, channel_id) {
 		const titles = [
 			'Top Kayle Win Rate',
 			'Top Kayle Pick Rate',
@@ -61,13 +62,13 @@ module.exports = {
 			));
 
 		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
-		const channel = await interaction.client.channels.fetch(channel_id);
+		const channel = await client.channels.fetch(channel_id);
 
 		for (const pair of zip(titles, files)) {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
-	async ugg(interaction, channel_id) {
+	async ugg(client, channel_id) {
 		const titles = [
 			'Platinum',
 			'Platinum+',
@@ -89,13 +90,17 @@ module.exports = {
 			));
 
 		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
-		const channel = await interaction.client.channels.fetch(channel_id);
+		const channel = await client.channels.fetch(channel_id);
 
 		for (const pair of zip(titles, files)) {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
-	async log(interaction, channel_id, data) {
+	async log(client, channel_id, data) {
+		if (data === undefined) {
+			data = await datafetcher.log();
+		}
+
 		await imagegen.generate_log_images(data);
 		const files = fs.readdirSync('./images/')
 			.filter(f => f.startsWith('log'))
@@ -106,6 +111,6 @@ module.exports = {
 				__dirname + '/../images/' + f,
 			));
 
-		interaction.client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
+		client.channels.fetch(channel_id).then(c => splitAndSendFiles(c, files));
 	},
 };
