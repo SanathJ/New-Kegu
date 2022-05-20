@@ -510,20 +510,17 @@ module.exports = {
 
 		let cnt = 2;
 		let encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'SimpleGraph_simple\']', 3000);
-		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 
 		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Graphs\']', 3000);
-		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Depth_depth\']', 3000);
-		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
@@ -535,7 +532,6 @@ module.exports = {
 	async generate_opgg_images() {
 		let cnt = 1;
 		const encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_trends, 'div[class^=\'recharts-responsive\']', 3000, './..');
-		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
 			cnt++;
