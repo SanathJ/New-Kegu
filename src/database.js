@@ -22,7 +22,7 @@ async function init() {
 
 	// links
 	db.statements.link_add = db.cursor.prepare('INSERT INTO links VALUES(?, ?)');
-	db.statements.link_edit = db.cursor.prepare('UPDATE links SET link = ? WHERE name = ?');
+	db.statements.link_edit = db.cursor.prepare('UPDATE links SET link = ?, name = ? WHERE name = ?');
 	db.statements.link_remove = db.cursor.prepare('DELETE FROM links WHERE name = ?');
 	db.statements.show = db.cursor.prepare('SELECT * FROM links WHERE name = ?');
 	db.statements.show_all = db.cursor.prepare('SELECT * FROM links');

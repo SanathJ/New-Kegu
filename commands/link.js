@@ -20,6 +20,21 @@ module.exports = {
 						.setDescription('The link')
 						.setRequired(true)))
 		.addSubcommand(subcommand =>
+			subcommand.setName('edit')
+				.setDescription('Edits a link in the database')
+				.addStringOption(option =>
+					option.setName('name')
+						.setDescription('Name of the link')
+						.setRequired(true)
+						.setAutocomplete(true))
+				.addStringOption(option =>
+					option.setName('link')
+						.setDescription('The link')
+						.setRequired(true))
+				.addStringOption(option =>
+					option.setName('new_name')
+						.setDescription('New name of the link')))
+		.addSubcommand(subcommand =>
 			subcommand.setName('remove')
 				.setDescription('Removes a link from the database')
 				.addStringOption(option =>
@@ -65,7 +80,7 @@ module.exports = {
 					const collector = sent_message.createMessageComponentCollector({ componentType: 'BUTTON' });
 					collector.on('collect', async (i) => {
 						if(i.customId == 'yes') {
-							db.statements.link_edit.run(link, name);
+							db.statements.link_edit.run(link, name, name);
 							await i.update({ content:'The link was edited', components: [] });
 							collector.stop();
 						}
@@ -81,7 +96,23 @@ module.exports = {
 			}
 
 		}
-		else {
+		else if(interaction.options.getSubcommand() == 'edit') {
+			await interaction.deferReply({ ephemeral: true });
+			const link = interaction.options.getString('link');
+			const name = interaction.options.getString('name');
+			const new_name = interaction.options.getString('new_name') ?? name;
+
+
+			const result = db.statements.link_edit.run(link, new_name, name);
+
+			if(result.changes !== 0) {
+				await interaction.editReply('Edited an entry');
+			}
+			else {
+				await interaction.editReply('There was an error. Make sure a link with such a name exists');
+			}
+		}
+		else if(interaction.options.getSubcommand() == 'remove') {
 			await interaction.deferReply({ ephemeral: true });
 			const name = interaction.options.getString('name');
 
