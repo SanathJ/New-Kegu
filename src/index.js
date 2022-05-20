@@ -14,6 +14,10 @@ const { token } = require('../config.json');
 		fs.mkdirSync('./images');
 	}
 
+	// run python server
+	const spawn = require('child_process').spawn;
+	spawn('python', ['src/recognizer_server.py']);
+
 	const flags = Intents.FLAGS;
 	const discord_client = new Client({
 		intents: [
