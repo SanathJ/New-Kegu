@@ -534,23 +534,20 @@ module.exports = {
 
 	async generate_opgg_images() {
 		let cnt = 1;
-		let encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_trends, 'div[class^=\'recharts-responsive\']', 3000, './..');
+		const encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_trends, 'div[class^=\'recharts-responsive\']', 3000, './..');
 		await Promise.all(encodedStrings);
 		for (const str of encodedStrings) {
 			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 
-		encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_champions, 'table[class^=\'positionRank\']', 3000, './..');
-		await Promise.all(encodedStrings);
-		for (const str of encodedStrings) {
-			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
-			cnt++;
-		}
+		const str = await screenshotter.takeScreenshotByXpath(urls.opgg_champions, 'body', ['//*[contains(text(), \'Champion Statistics\')]', './..']);
+		fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
+		cnt++;
 
 		// crop leaderboard image
 		const image = await Jimp.read(`images/opgg${cnt - 1}.png`);
-		image.crop(0, 0, image.bitmap.width, 728);
+		image.crop(0, 0, image.bitmap.width, 520);
 		image.write(`images/opgg${cnt - 1}.png`);
 	},
 

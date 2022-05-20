@@ -9,10 +9,6 @@ const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('../config.json');
 
 (async function toplevel() {
-	// set up screenshotter and fetcher
-	await screenshotter.init();
-	await datafetcher.init();
-
 	// set up required directories
 	if (!fs.existsSync('./images')) {
 		fs.mkdirSync('./images');

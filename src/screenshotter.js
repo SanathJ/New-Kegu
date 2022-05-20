@@ -7,22 +7,22 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let driver;
+async function init_driver() {
+	const options = new firefox.Options();
+	options.headless();
+	const driver = await new Builder()
+		.forBrowser('firefox')
+		.setFirefoxService(service)
+		.setFirefoxOptions(options)
+		.build();
+	await driver.manage().window().fullscreen();
+	return driver;
+}
 
 
 module.exports = {
-	async init() {
-		const options = new firefox.Options();
-		options.headless();
-		driver = await new Builder()
-			.forBrowser('firefox')
-			.setFirefoxService(service)
-			.setFirefoxOptions(options)
-			.build();
-		await driver.manage().window().fullscreen();
-	},
 	async takeScreenshot(site) {
-		await driver.switchTo().newWindow('tab');
+		const driver = await init_driver();
 		let body;
 		switch (site) {
 
@@ -43,10 +43,14 @@ module.exports = {
 		await sleep(2000);
 
 		// Captures the element screenshot
-		return await body.takeScreenshot(true);
+		const ss = await body.takeScreenshot(true);
+
+		await driver.quit();
+
+		return ss;
 	},
 	async takePartialScreenshots(link, element, sleeptime, xpath = '.') {
-		await driver.switchTo().newWindow('tab');
+		const driver = await init_driver();
 		await driver.get(link);
 		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
 
@@ -61,12 +65,23 @@ module.exports = {
 			e = await e.findElement(By.xpath(xpath));
 			images.push(await e.takeScreenshot(true));
 		}
-		return images;
-
-
-	},
-	async shutdown() {
 		await driver.quit();
+		return images;
+	},
+	async takeScreenshotByXpath(link, element, xpaths) {
+		const driver = await init_driver();
+		await driver.get(link);
+		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
+
+		let ele = await driver.findElement(By.css(element));
+		for (const xpath of xpaths) {
+			ele = await ele.findElement(By.xpath(xpath));
+		}
+
+		const ss = await ele.takeScreenshot();
+
+		await driver.quit();
+		return ss;
 	},
 };
 

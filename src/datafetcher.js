@@ -8,20 +8,6 @@ const { format } = require('util');
 
 const { JSDOM } = require('jsdom');
 
-let driver;
-
-function findVal(obj, keyToFind) {
-	if (obj[keyToFind]) return obj[keyToFind];
-
-	for (const key in obj) {
-		if (typeof obj[key] === 'object') {
-			const value = findVal(obj[key], keyToFind);
-			if (value) return value;
-		}
-	}
-	return false;
-}
-
 const championJson = {};
 
 async function getLatestChampionDDragon(language = 'en_US') {
@@ -55,24 +41,52 @@ async function getChampionByID(name, language = 'en_US') {
 	return (await getLatestChampionDDragon(language))[name];
 }
 
+async function init_driver() {
+	const options = new firefox.Options();
+	options.headless();
+	const driver = await new Builder()
+		.forBrowser('firefox')
+		.setFirefoxService(service)
+		.setFirefoxOptions(options)
+		.build();
+	await driver.manage().window().fullscreen();
+	return driver;
+}
+
 module.exports = {
-	async init() {
-		const options = new firefox.Options();
-		options.headless();
-		driver = await new Builder()
-			.forBrowser('firefox')
-			.setFirefoxService(service)
-			.setFirefoxOptions(options)
-			.build();
-		await driver.manage().window().fullscreen();
-	},
 	async lol() {
+		const driver = await init_driver();
 		await driver.get(urls.lolalytics);
-		const result = await driver.executeScript('return precache');
-		return findVal(result, 'header');
+		const element = 'div[class^=\'ChampionStats_stats\']';
+		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
+		const ele = await driver.findElement(By.css(element));
+		const txt = (await ele.getText()).split('\n');
+		const data = txt.map((val, i) => {
+			if(i % 2 == 0) {
+				return [val, txt[i + 1]];
+			}
+		})
+			.filter(e => e != undefined)
+			.reduce(function(acc, cur) {
+				if(cur[1] == 'Win Rate') {
+					acc.wr = parseFloat(cur[0].slice(0, -1));
+				}
+				else if(cur[1] == 'Pick Rate') {
+					acc.pr = parseFloat(cur[0].slice(0, -1));
+				}
+				else if(cur[1] == 'Ban Rate') {
+					acc.br = parseFloat(cur[0].slice(0, -1));
+				}
+				acc[cur[1]] = cur[0];
+				return acc;
+			}, {});
+
+		await driver.quit();
+		return data;
 	},
 	async opgg() {
 		const element = 'div[class^=\'recharts-responsive\']';
+		const driver = await init_driver();
 		await driver.get(urls.opgg_trends);
 		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
 
@@ -98,6 +112,7 @@ module.exports = {
 		data.pr = ele[1];
 		data.br = ele[2];
 
+		await driver.quit();
 		return data;
 	},
 	async ugg(tier = 'platinum_plus') {
@@ -215,8 +230,5 @@ module.exports = {
 		data.br = data['Ban Rate'];
 
 		return data;
-	},
-	async shutdown() {
-		await driver.quit();
 	},
 };
