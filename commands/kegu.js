@@ -21,7 +21,7 @@ async function kegu(client) {
 		const channel_id = db.statements.channel.get(site).channel_id;
 
 		// print date/patch
-		postman.sendDateAndPatch(client, channel_id, patch);
+		await postman.sendDateAndPatch(client, channel_id, patch);
 
 		// send images
 		await postman[site](client, channel_id);

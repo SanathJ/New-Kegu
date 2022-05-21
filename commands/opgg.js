@@ -23,7 +23,7 @@ module.exports = {
 
 		// print date/patch
 		const patch = await getPatch();
-		sendDateAndPatch(interaction.client, channel_id, patch);
+		await sendDateAndPatch(interaction.client, channel_id, patch);
 
 		// send images
 		await opgg(interaction.client, channel_id);
