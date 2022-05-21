@@ -16,7 +16,11 @@ const { token } = require('../config.json');
 
 	// run python server
 	const spawn = require('child_process').spawn;
-	spawn('python', ['src/recognizer_server.py']);
+	const p = spawn('python', ['src/recognizer_server.py']);
+	p.stderr.on('data', () => {
+		console.error('Python server could not be started. Ensure python and its libraries are set up correctly and venvs are activated.');
+		process.exit(1);
+	});
 
 	const flags = Intents.FLAGS;
 	const discord_client = new Client({
