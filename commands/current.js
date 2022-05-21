@@ -23,6 +23,11 @@ async function current(client) {
 	}
 
 	for (const site of ['ugg', 'opgg', 'lol', 'log']) {
+		const enabled = db.statements.feature_get.get(site)?.enabled;
+		if(!enabled) {
+			continue;
+		}
+
 		const data = await (datafetcher[site]());
 		const today = new Date();
 		const row = {

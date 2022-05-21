@@ -10,6 +10,12 @@ module.exports = {
 		.setName('log')
 		.setDescription('Posts League Of Graphs data in #league-of-graphs and updates patch data'),
 	async execute(interaction) {
+		const enabled = db.statements.feature_get.get('log')?.enabled;
+		if(!enabled) {
+			await interaction.reply({ content: 'Feature disabled', ephemeral: true });
+			return;
+		}
+
 		// defer response as web interactions take a while
 		await interaction.deferReply({ ephemeral: true });
 

@@ -55,6 +55,12 @@ module.exports = {
 			}
 		}
 		else {
+			const enabled = db.statements.feature_get.get(site)?.enabled;
+			if(!enabled) {
+				await interaction.editReply('Feature disabled');
+				return;
+			}
+
 			const data = await (datafetcher[site]());
 			const today = new Date();
 			row = {

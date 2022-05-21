@@ -30,6 +30,10 @@ async function init() {
 	// messages
 	db.statements.message_add = db.cursor.prepare('INSERT OR REPLACE INTO messages VALUES(?, ?, ?)');
 	db.statements.message_get = db.cursor.prepare('SELECT * FROM messages WHERE type = ?');
+
+	// features
+	db.statements.feature_set = db.cursor.prepare('INSERT OR REPLACE INTO features VALUES(?, ?)');
+	db.statements.feature_get = db.cursor.prepare('SELECT * FROM features WHERE feature = ?');
 }
 
 function close() {

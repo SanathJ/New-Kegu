@@ -13,6 +13,10 @@ async function kegu(client) {
             + ('0' + today.getDate()).slice(-2);
 
 	for (const site of ['ugg', 'opgg', 'lol', 'log']) {
+		const enabled = db.statements.feature_get.get(site)?.enabled;
+		if(!enabled) {
+			continue;
+		}
 
 		const channel_id = db.statements.channel.get(site).channel_id;
 
