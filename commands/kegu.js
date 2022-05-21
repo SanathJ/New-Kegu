@@ -12,10 +12,10 @@ async function kegu(client) {
             + ('0' + (today.getMonth() + 1)).slice(-2) + '-'
             + ('0' + today.getDate()).slice(-2);
 
-	for (const site of ['ugg', 'opgg', 'lol', 'log']) {
+	await Promise.all(['ugg', 'opgg', 'lol', 'log'].map(async (site) => {
 		const enabled = db.statements.feature_get.get(site)?.enabled;
 		if(!enabled) {
-			continue;
+			return;
 		}
 
 		const channel_id = db.statements.channel.get(site).channel_id;
@@ -28,7 +28,7 @@ async function kegu(client) {
 
 		const data = await datafetcher[site]();
 		db.statements[site].run(date, patch, data.wr, data.pr, data.br);
-	}
+	}));
 }
 
 module.exports = {

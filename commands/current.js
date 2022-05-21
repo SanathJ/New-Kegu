@@ -22,10 +22,10 @@ async function current(client) {
 		}
 	}
 
-	for (const site of ['ugg', 'opgg', 'lol', 'log']) {
+	await Promise.all(['ugg', 'opgg', 'lol', 'log'].map(async (site) => {
 		const enabled = db.statements.feature_get.get(site)?.enabled;
 		if(!enabled) {
-			continue;
+			return;
 		}
 
 		const data = await (datafetcher[site]());
@@ -61,7 +61,7 @@ async function current(client) {
 				const channel = await client.channels.fetch(message_data.channel_id);
 				const message = await channel.messages.fetch(message_data.message_id);
 				message.edit({ embeds:[embed] });
-				continue;
+				return;
 			}
 			catch (error) {
 				// if message has been deleted, we send again, else throw error up
@@ -74,7 +74,7 @@ async function current(client) {
 		const channel = await client.channels.fetch(db.statements.channel.get('current').channel_id);
 		const sent_message = await channel.send({ embeds:[embed] });
 		db.statements.message_add.run(sent_message.id, sent_message.channelId, site);
-	}
+	}));
 
 	const channel = await client.channels.fetch(db.statements.channel.get('current').channel_id);
 	const row = new MessageActionRow()
