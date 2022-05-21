@@ -10,7 +10,7 @@ const { token } = require('../config.json');
 
 (async function toplevel() {
 	// set up required directories
-	if (!fs.existsSync('./images')) {
+	if(!fs.existsSync('./images')) {
 		fs.mkdirSync('./images');
 	}
 
@@ -43,7 +43,7 @@ const { token } = require('../config.json');
 	// command handler
 	discord_client.commands = new Collection();
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
+	for(const file of commandFiles) {
 		const command = require(`../commands/${file}`);
 		discord_client.commands.set(command.data.name, command);
 	}
@@ -51,16 +51,16 @@ const { token } = require('../config.json');
 	// autocomplete handler
 	discord_client.autocompletes = new Collection();
 	const autocompleteFiles = fs.readdirSync('./autocompletes').filter(file => file.endsWith('.js'));
-	for (const file of autocompleteFiles) {
+	for(const file of autocompleteFiles) {
 		const autocomplete = require(`../autocompletes/${file}`);
 		discord_client.autocompletes.set(file.slice(0, -3), autocomplete);
 	}
 
 	// event handler
 	const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-	for (const file of eventFiles) {
+	for(const file of eventFiles) {
 		const event = require(`../events/${file}`);
-		if (event.once) {
+		if(event.once) {
 			discord_client.once(event.name, (...args) => event.execute(...args));
 		}
 		else {

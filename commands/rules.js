@@ -22,7 +22,7 @@ module.exports = {
 			'#9.) Against Discord\'s TOS. https://discord.com/guidelines',
 			'#10.) Dealing with rule breakers. If anyone starts topics that you do not think are appropriate to a gaming server, do not engage with that person -- just report it to the mod',
 		];
-		if (rule_number !== null) {
+		if(rule_number !== null) {
 			if(rule_number > rules.length || rule_number < 1) {
 				await interaction.reply({ content: 'No such rule', ephemeral: true });
 				return;

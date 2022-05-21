@@ -1,7 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { emotes } = require('../src/constants.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const { db } = require('../src/database.js');
+const { emotes } = require('../src/constants.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

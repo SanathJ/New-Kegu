@@ -9,7 +9,7 @@ const { clientID, guildID, token } = require('../config.json');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
+for(const file of commandFiles) {
 	const command = require(`../commands/${file}`);
 	commands.push(command.data.toJSON());
 }
@@ -27,7 +27,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 		console.log('Successfully reloaded application (/) commands');
 	}
-	catch (error) {
+	catch(error) {
 		console.error(error);
 	}
 })();

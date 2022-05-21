@@ -4,7 +4,7 @@ module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 		// we only serve two interactions
-		if (!interaction.isCommand() && !interaction.isAutocomplete()) return;
+		if(!interaction.isCommand() && !interaction.isAutocomplete()) return;
 
 		// autocomplete handling
 		if(interaction.isAutocomplete()) {
@@ -21,12 +21,12 @@ module.exports = {
 		// command handling
 		const command = interaction.client.commands.get(interaction.commandName);
 
-		if (!command) return;
+		if(!command) return;
 
 		try {
 			await command.execute(interaction);
 		}
-		catch (error) {
+		catch(error) {
 			console.error(error);
 			if(!(error instanceof DiscordAPIError)) {
 				await interaction.reply({

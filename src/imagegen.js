@@ -174,7 +174,7 @@ class logImageGenerator {
 			ctx.fillStyle = '#2f3b4b';
 
 			// draw dividers only between categories
-			if (i != 4) {
+			if(i != 4) {
 			// divider
 				drawLine(ctx, 22, 112 + 44 + yOffset, 525, 112 + 44 + yOffset);
 			}
@@ -259,7 +259,7 @@ class logImageGenerator {
 		const xOffsets = [0, 0, 420, 0, 420];
 		const yOffsets = [0, 210, 210, 420, 420];
 
-		for (let i = 0; i < 5; i++) {
+		for(let i = 0; i < 5; i++) {
 		// value
 			ctx.textAlign = 'center';
 			ctx.font = '300 56px Roboto';
@@ -340,7 +340,7 @@ class logImageGenerator {
 		ctx.textBaseline = 'middle';
 		const types = ['Quadra', 'Triple', 'Double'];
 
-		for (let i = 0; i < 3; i++) {
+		for(let i = 0; i < 3; i++) {
 			const currentY = topY + (170 / 6) * (2 * i + 1);
 			// value
 			ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
@@ -510,18 +510,18 @@ module.exports = {
 
 		let cnt = 2;
 		let encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'SimpleGraph_simple\']', 3000);
-		for (const str of encodedStrings) {
+		for(const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 
 		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Graphs\']', 3000);
-		for (const str of encodedStrings) {
+		for(const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
 		encodedStrings = await screenshotter.takePartialScreenshots(urls.lolalytics, 'div[class^=\'Depth_depth\']', 3000);
-		for (const str of encodedStrings) {
+		for(const str of encodedStrings) {
 			fs.writeFileSync(`./images/lol${cnt}.png`, str, 'base64');
 			cnt++;
 		}
@@ -532,7 +532,7 @@ module.exports = {
 	async generate_opgg_images() {
 		let cnt = 1;
 		const encodedStrings = await screenshotter.takePartialScreenshots(urls.opgg_trends, 'div[class^=\'recharts-responsive\']', 3000, './..');
-		for (const str of encodedStrings) {
+		for(const str of encodedStrings) {
 			fs.writeFileSync(`./images/opgg${cnt}.png`, str, 'base64');
 			cnt++;
 		}
@@ -570,7 +570,7 @@ module.exports = {
 			'great-tier':'#08a6ff', 'volxd-tier':'#ff9b00',
 		};
 
-		for (let i = 0; i < tierList.length; i++) {
+		for(let i = 0; i < tierList.length; i++) {
 			const data = await datafetcher.ugg(tierList[i]);
 
 			const canvas = createCanvas(1015, 90);

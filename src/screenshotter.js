@@ -24,7 +24,7 @@ module.exports = {
 	async takeScreenshot(site) {
 		const driver = await init_driver();
 		let body;
-		switch (site) {
+		switch(site) {
 
 		case 'opgg':
 			await driver.get(urls.opgg_trends);
@@ -74,7 +74,7 @@ module.exports = {
 		await driver.wait(until.elementLocated(By.css(element)), 30000, 'Timed out after 30 seconds', 1000);
 
 		let ele = await driver.findElement(By.css(element));
-		for (const xpath of xpaths) {
+		for(const xpath of xpaths) {
 			ele = await ele.findElement(By.xpath(xpath));
 		}
 

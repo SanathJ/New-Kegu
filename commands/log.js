@@ -1,9 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-const { log, sendDateAndPatch, getPatch } = require('../src/postman.js');
-const { db } = require('../src/database.js');
 const datafetcher = require('../src/datafetcher.js');
-
+const { db } = require('../src/database.js');
+const { getPatch, log, sendDateAndPatch } = require('../src/postman.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,8 +33,8 @@ module.exports = {
 		// formats present date as YYYY-MM-DD
 		const today = new Date();
 		const date = today.getFullYear() + '-'
-					+ ('0' + (today.getMonth() + 1)).slice(-2) + '-'
-					+ ('0' + today.getDate()).slice(-2);
+			+ ('0' + (today.getMonth() + 1)).slice(-2) + '-'
+			+ ('0' + today.getDate()).slice(-2);
 		db.statements.log.run(date, patch, data.wr, data.pr, data.br);
 
 		// complete responding to command

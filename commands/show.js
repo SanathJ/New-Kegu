@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { db } = require('../src/database.js');
 
+const { db } = require('../src/database.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -21,17 +21,17 @@ module.exports = {
 			data = [db.statements.show.get(name)];
 		}
 
-		if (data.length === 0 || data[0] === undefined) {
+		if(data.length === 0 || data[0] === undefined) {
 			await interaction.editReply('No such link exists');
 		}
 		else {
 			const text = [];
-			for (const datum of data) {
+			for(const datum of data) {
 				const entry = `**${datum.name}:** ${datum.link}`;
 				text.push(entry);
 			}
 			const msg = await interaction.editReply(text.join('\n'));
-			if (data.length > 1) {
+			if(data.length > 1) {
 				await msg.suppressEmbeds(true);
 			}
 		}

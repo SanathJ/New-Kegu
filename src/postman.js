@@ -23,7 +23,7 @@ module.exports = {
 			const data = await response.json();
 			return data.patches.slice(-1)[0].name;
 		}
-		catch (error) {
+		catch(error) {
 			console.error(error);
 		}
 	},
@@ -64,7 +64,7 @@ module.exports = {
 		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
 		const channel = await client.channels.fetch(channel_id);
 
-		for (const pair of zip(titles, files)) {
+		for(const pair of zip(titles, files)) {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
@@ -92,12 +92,12 @@ module.exports = {
 		const zip = (a, b) => a.map((k, i) => [k, b[i]]);
 		const channel = await client.channels.fetch(channel_id);
 
-		for (const pair of zip(titles, files)) {
+		for(const pair of zip(titles, files)) {
 			await channel.send({ content: pair[0], files: [pair[1]] });
 		}
 	},
 	async log(client, channel_id, data) {
-		if (data === undefined) {
+		if(data === undefined) {
 			data = await datafetcher.log();
 		}
 

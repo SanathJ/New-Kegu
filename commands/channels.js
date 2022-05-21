@@ -23,7 +23,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const channel = interaction.options.getChannel('channel');
-		if (channel.type != 'GUILD_TEXT') {
+		if(channel.type != 'GUILD_TEXT') {
 			await interaction.reply({ content: 'Channel must be a text channel', ephemeral: true });
 			return;
 		}

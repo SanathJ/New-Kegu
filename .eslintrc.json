@@ -18,6 +18,19 @@
 		"dot-location": ["error", "property"],
 		"handle-callback-err": "off",
 		"indent": ["error", "tab"],
+		"keyword-spacing": ["error", { 
+			"before": true,
+			"after": false,
+			"overrides" : {
+				"else": { "after": true},
+				"try": { "after": true},
+				"of": { "after": true},
+				"do": { "after": true},
+				"case": { "after": true},
+				"return": { "after": true},
+				"const": { "after": true}
+			}
+		}],
 		"max-nested-callbacks": ["error", { "max": 4 }],
 		"max-statements-per-line": ["error", { "max": 2 }],
 		"no-console": "off",

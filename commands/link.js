@@ -1,6 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton } = require('discord.js');
-
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const { db } = require('../src/database.js');
 
@@ -49,7 +48,7 @@ module.exports = {
 			const link = interaction.options.getString('link');
 			const name = interaction.options.getString('name');
 
-			if (name == 'all') {
+			if(name == 'all') {
 				await interaction.editReply('Link name cannot be `all`');
 				return;
 			}
@@ -59,8 +58,8 @@ module.exports = {
 				await interaction.editReply('Added link to database');
 				return;
 			}
-			catch (error) {
-				if (error.code == 'SQLITE_CONSTRAINT_PRIMARYKEY') {
+			catch(error) {
+				if(error.code == 'SQLITE_CONSTRAINT_PRIMARYKEY') {
 					const row = new MessageActionRow()
 						.addComponents(
 							new MessageButton()
@@ -74,18 +73,18 @@ module.exports = {
 
 					const sent_message = await interaction.editReply({
 						content: 'A link by this name already exists. Would you like to edit it?',
-						components:[row],
-						ephemeral:true,
+						components: [row],
+						ephemeral: true,
 					});
 					const collector = sent_message.createMessageComponentCollector({ componentType: 'BUTTON' });
 					collector.on('collect', async (i) => {
 						if(i.customId == 'yes') {
 							db.statements.link_edit.run(link, name, name);
-							await i.update({ content:'The link was edited', components: [] });
+							await i.update({ content: 'The link was edited', components: [] });
 							collector.stop();
 						}
 						else {
-							await i.update({ content:'The link was not edited', components: [] });
+							await i.update({ content: 'The link was not edited', components: [] });
 							collector.stop();
 						}
 					});

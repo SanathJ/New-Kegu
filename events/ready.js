@@ -10,7 +10,7 @@ module.exports = {
 	async execute(client) {
 		// sets up timers
 		const timerFiles = fs.readdirSync('./timers').filter(file => file.endsWith('.js'));
-		for (const file of timerFiles) {
+		for(const file of timerFiles) {
 			const { execute, cronstring } = require(`../timers/${file}`);
 			const job = new CronJob(cronstring, async function() {
 				execute(client);
